@@ -3,12 +3,16 @@ package com.indicadoresfinancieros.document;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
+
 @Document
 public class Moneda {
 
     @Id
     private String codigo;
-    private String nombre;
+    private LocalDate date;
+
+    private Indicators indicators;
 
     public String getCodigo() {
         return codigo;
@@ -18,11 +22,19 @@ public class Moneda {
         this.codigo = codigo;
     }
 
-    public String getNombre() {
-        return nombre;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public Indicators getIndicators() {
+        return indicators;
+    }
+
+    public void setIndicators(Indicators indicators) {
+        this.indicators = indicators;
     }
 }
