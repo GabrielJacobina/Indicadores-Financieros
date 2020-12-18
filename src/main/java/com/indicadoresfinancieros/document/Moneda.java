@@ -1,5 +1,6 @@
 package com.indicadoresfinancieros.document;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,6 +14,15 @@ public class Moneda {
     private LocalDate date;
 
     private Indicators indicators;
+
+    public Moneda() {
+    }
+
+    public Moneda(String codigo, LocalDate date, Indicators indicators) {
+        this.codigo = codigo;
+        this.date = date;
+        this.indicators = indicators;
+    }
 
     public String getCodigo() {
         return codigo;
