@@ -1,11 +1,17 @@
 package com.indicadoresfinancieros.document;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 
 @Document
 public class Moneda {
+
+    @Id
+    @JsonIgnore
+    private String id;
 
     private LocalDate date;
 
@@ -17,6 +23,14 @@ public class Moneda {
     public Moneda(LocalDate date, Indicators indicators) {
         this.date = date;
         this.indicators = indicators;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public LocalDate getDate() {

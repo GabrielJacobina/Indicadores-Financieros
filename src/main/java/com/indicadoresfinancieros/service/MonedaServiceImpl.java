@@ -32,7 +32,16 @@ public class MonedaServiceImpl implements MonedaService{
 
     @Override
     public Mono<Moneda> findById(String codigo) {
-        return monedaRepository.findById(codigo);
+        return null; //monedaRepository.findById(codigo);
+    }
+
+
+
+    @Override
+    public Mono<Moneda> findOne(String data) {
+        System.out.println(data);
+        //return monedaRepository.findById(data);
+        return null;
     }
 
     @Override
@@ -79,27 +88,22 @@ public class MonedaServiceImpl implements MonedaService{
         ResponseEntity<Dolar> response = restTemplate.exchange(
                 "https://currency26.p.rapidapi.com/convert/USD/CLP/1", HttpMethod.GET, entity, Dolar.class);
 
-        //System.out.println(response);
-        System.out.println(response.getBody().toString());
-        Dolar dolar = response.getBody();
-
         return response.getBody();
     }
 
 
 
     @Override
-    public Moneda obtendoMoneda(LocalDate date) {
+    public Mono<Moneda> obtendoMoneda(LocalDate date) {
         Moneda moneda = new Moneda();
         BigDecimal valorUf = testeDeUf().getSerie().get(0).getValor();
         BigDecimal valorUtm = testeDeUtm().getSerie().get(0).getValor();
         BigDecimal valorDolar = testeDeDolar().getValor();
         Indicators indicators = new Indicators(valorUf, valorUtm, valorDolar);
-
+        date = LocalDate.of(2020, 05, 10);
         moneda.setDate(date);
         moneda.setIndicators(indicators);
-
-        return moneda;
+        return this.save(moneda);
     }
 
 

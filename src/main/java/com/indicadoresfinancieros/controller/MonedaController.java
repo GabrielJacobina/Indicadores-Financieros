@@ -13,16 +13,15 @@ import java.time.LocalDate;
 import java.util.Calendar;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/bideafactory")
 public class MonedaController {
 
     @Autowired
     MonedaService monedaService;
 
-    @GetMapping("/bideafactory/indicadoreshoy")
-    public ResponseEntity<Moneda> obterMoedas() {
-        Moneda moneda = monedaService.obtendoMoneda(LocalDate.now());
-        return ResponseEntity.ok(moneda);
+    @GetMapping("/indicadoreshoy")
+    public Mono<Moneda> obterMoedas() {
+        return monedaService.obtendoMoneda(LocalDate.now());
     }
 
     /*@GetMapping
@@ -30,14 +29,7 @@ public class MonedaController {
         return monedaService.findAll();
     }*/
 
-//    @GetMapping
-//    public ResponseEntity<Moneda> obterMoneda() {
-//        //Moneda moneda = new Moneda();
-//        Moneda moneda = monedaService.obterMonedas();
-//        return ResponseEntity.ok(moneda);
-//    }
-
-    @GetMapping
+    @GetMapping("/uf")
     public MindicadorApi getMonedaUf(){
         return monedaService.testeDeUf();
     }

@@ -17,5 +17,6 @@ public interface MonedaService {
     MindicadorApi testeDeUf();
     MindicadorApi testeDeUtm();
     Dolar testeDeDolar();
-    Moneda obtendoMoneda(LocalDate date);
+    Mono<Moneda> obtendoMoneda(LocalDate date);
+    Mono<Moneda> findOne(String data);
 }
