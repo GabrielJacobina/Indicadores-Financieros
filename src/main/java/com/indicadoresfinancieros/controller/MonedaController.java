@@ -9,12 +9,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
+import java.util.Calendar;
+
 @RestController
 @RequestMapping("/")
 public class MonedaController {
 
     @Autowired
     MonedaService monedaService;
+
+    @GetMapping("/bideafactory/indicadoreshoy")
+    public ResponseEntity<Moneda> obterMoedas() {
+        Moneda moneda = monedaService.obtendoMoneda(LocalDate.now());
+        return ResponseEntity.ok(moneda);
+    }
 
     /*@GetMapping
     public Flux<Moneda> getMoneda(){
@@ -39,7 +48,7 @@ public class MonedaController {
     }
 
     @GetMapping(value = "/dolar")
-    public ResponseEntity<Dolar> getMonedaDolar(){
+    public Dolar getMonedaDolar(){
         return monedaService.testeDeDolar();
     }
 

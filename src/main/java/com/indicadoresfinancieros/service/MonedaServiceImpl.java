@@ -1,6 +1,7 @@
 package com.indicadoresfinancieros.service;
 
 import com.indicadoresfinancieros.document.Dolar;
+import com.indicadoresfinancieros.document.Indicators;
 import com.indicadoresfinancieros.document.MindicadorApi;
 import com.indicadoresfinancieros.document.Moneda;
 import com.indicadoresfinancieros.repository.MonedaRepository;
@@ -11,12 +12,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 
 @Service
 public class MonedaServiceImpl implements MonedaService{
@@ -67,7 +68,7 @@ public class MonedaServiceImpl implements MonedaService{
     }
 
     @Override
-    public ResponseEntity<Dolar> testeDeDolar() {
+    public Dolar testeDeDolar() {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("x-rapidapi-host", "currency26.p.rapidapi.com");
@@ -82,6 +83,24 @@ public class MonedaServiceImpl implements MonedaService{
         System.out.println(response.getBody().toString());
         Dolar dolar = response.getBody();
 
-        return response;
+        return response.getBody();
     }
+
+
+
+    @Override
+    public Moneda obtendoMoneda(LocalDate date) {
+        Moneda moneda = new Moneda();
+        BigDecimal valorUf = testeDeUf().getSerie().get(0).getValor();
+        BigDecimal valorUtm = testeDeUtm().getSerie().get(0).getValor();
+        BigDecimal valorDolar = testeDeDolar().getValor();
+        Indicators indicators = new Indicators(valorUf, valorUtm, valorDolar);
+
+        moneda.setDate(date);
+        moneda.setIndicators(indicators);
+
+        return moneda;
+    }
+
+
 }

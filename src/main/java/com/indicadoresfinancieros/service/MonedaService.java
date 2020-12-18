@@ -3,9 +3,10 @@ package com.indicadoresfinancieros.service;
 import com.indicadoresfinancieros.document.Dolar;
 import com.indicadoresfinancieros.document.MindicadorApi;
 import com.indicadoresfinancieros.document.Moneda;
-import org.springframework.http.ResponseEntity;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.time.LocalDate;
 
 public interface MonedaService {
 
@@ -15,5 +16,6 @@ public interface MonedaService {
     MindicadorApi obterMoeda(String url);
     MindicadorApi testeDeUf();
     MindicadorApi testeDeUtm();
-    ResponseEntity<Dolar> testeDeDolar();
+    Dolar testeDeDolar();
+    Moneda obtendoMoneda(LocalDate date);
 }

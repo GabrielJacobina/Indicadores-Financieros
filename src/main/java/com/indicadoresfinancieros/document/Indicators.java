@@ -1,5 +1,6 @@
 package com.indicadoresfinancieros.document;
 
+
 import java.math.BigDecimal;
 
 public class Indicators {
@@ -7,6 +8,12 @@ public class Indicators {
     private BigDecimal dolar;
     private BigDecimal uf;
     private BigDecimal utm;
+
+    public Indicators(BigDecimal dolar, BigDecimal uf, BigDecimal utm) {
+        this.dolar = dolar;
+        this.uf = uf;
+        this.utm = utm;
+    }
 
     public BigDecimal getDolar() {
         return dolar;
