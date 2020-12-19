@@ -11,19 +11,23 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.client.RestTemplate;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Service
 public class MonedaServiceImpl implements MonedaService{
 
     @Autowired
-    MonedaRepository monedaRepository;
+    private MonedaRepository monedaRepository;
+
+    private Boolean temNoBanco = false;
 
     @Override
     public Flux<Moneda> findAll() {
@@ -32,16 +36,17 @@ public class MonedaServiceImpl implements MonedaService{
 
     @Override
     public Mono<Moneda> findById(String codigo) {
-        return null; //monedaRepository.findById(codigo);
+        return monedaRepository.findById(codigo);
     }
 
-
-
     @Override
-    public Mono<Moneda> findOne(String data) {
-        System.out.println(data);
-        //return monedaRepository.findById(data);
-        return null;
+    public Mono<Moneda> findByData(LocalDate data) {
+        //data = LocalDate.of(2020, 05, 10);
+        LocalDateTime dateTime1 = data.atStartOfDay();
+        System.out.println("Print do dateTime: " + dateTime1);
+        Mono<Moneda> monedaFlux = monedaRepository.findMonedaByDate(dateTime1);
+
+        return monedaFlux;
     }
 
     @Override
@@ -81,7 +86,7 @@ public class MonedaServiceImpl implements MonedaService{
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("x-rapidapi-host", "currency26.p.rapidapi.com");
-        headers.set("x-rapidapi-key", "3e145c02a5mshd5aa02a0558e374p164099jsn355af2542355");
+        headers.set("x-rapidapi-key", "eeacb905efmshd6297967a0b2e40p1858aajsn6f1d82ef9693");
 
         HttpEntity entity = new HttpEntity(headers);
 
@@ -95,15 +100,21 @@ public class MonedaServiceImpl implements MonedaService{
 
     @Override
     public Mono<Moneda> obtendoMoneda(LocalDate date) {
+        //date = LocalDate.of(2051, 9, 24);
+        Mono<Moneda> monedaB = this.findByData(date);
+        System.out.println(monedaB);
+        //if (monedaB != null) {
+           // return monedaB;
+        //}
         Moneda moneda = new Moneda();
         BigDecimal valorUf = testeDeUf().getSerie().get(0).getValor();
         BigDecimal valorUtm = testeDeUtm().getSerie().get(0).getValor();
         BigDecimal valorDolar = testeDeDolar().getValor();
         Indicators indicators = new Indicators(valorUf, valorUtm, valorDolar);
-        date = LocalDate.of(2020, 05, 10);
         moneda.setDate(date);
         moneda.setIndicators(indicators);
         return this.save(moneda);
+
     }
 
 

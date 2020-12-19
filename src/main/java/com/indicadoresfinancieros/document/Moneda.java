@@ -2,6 +2,7 @@ package com.indicadoresfinancieros.document;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ public class Moneda {
     @JsonIgnore
     private String id;
 
+    @Indexed(unique=true)
     private LocalDate date;
 
     private Indicators indicators;
