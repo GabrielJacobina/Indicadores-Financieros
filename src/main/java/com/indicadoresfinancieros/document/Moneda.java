@@ -11,35 +11,23 @@ import java.time.LocalDate;
 public class Moneda {
 
     @Id
-    @JsonIgnore
-    private String id;
-
-    @Indexed(unique=true)
-    private LocalDate date;
+    private String date;
 
     private Indicators indicators;
 
     public Moneda() {
     }
 
-    public Moneda(LocalDate date, Indicators indicators) {
+    public Moneda(String date, Indicators indicators) {
         this.date = date;
         this.indicators = indicators;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

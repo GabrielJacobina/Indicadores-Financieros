@@ -9,14 +9,5 @@ import reactor.core.publisher.Mono;
 import java.time.LocalDate;
 
 public interface MonedaService {
-
-    Flux<Moneda> findAll();
-    Mono<Moneda> findById(String codigo);
-    Mono<Moneda> save(Moneda moneda);
-    MindicadorApi obterMoeda(String url);
-    MindicadorApi testeDeUf();
-    MindicadorApi testeDeUtm();
-    Dolar testeDeDolar();
     Mono<Moneda> obtendoMoneda(LocalDate date);
-    Mono<Moneda> findByData(LocalDate data);
 }
