@@ -39,7 +39,7 @@ public class MonedaServiceImpl implements MonedaService{
         mono.subscribe(c -> {
             this.moneda = c;
         });
-        mono.block();
+        mono.toProcessor().block();
         return mono;
     }
 
