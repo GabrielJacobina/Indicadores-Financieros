@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.BodyInserters;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.MonoSink;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -31,10 +32,15 @@ public class MonedaServiceImpl implements MonedaService{
     @Autowired
     private MonedaRepository monedaRepository;
 
-    public Mono<Moneda> findByData(LocalDate data) {
-        String dataS = data.toString();
-        Mono<Moneda> monedaFlux = monedaRepository.findById(dataS);
-        return monedaFlux;
+    Moneda moneda = new Moneda();
+
+    public Mono<Moneda> findByData(String dataS) {
+        Mono<Moneda> mono = monedaRepository.findById(dataS);
+        mono.subscribe(c -> {
+            this.moneda = c;
+        });
+        mono.block();
+        return mono;
     }
 
     public Mono<Moneda> save(Moneda moneda) {
@@ -74,14 +80,14 @@ public class MonedaServiceImpl implements MonedaService{
     }
 
     @Override
-    public Mono<Moneda> obtendoMoneda(LocalDate date) {
-        String dataBr = date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        String data = date.toString();
-        Mono<Moneda> monedaB = this.findByData(date)
-                .switchIfEmpty(this.salvarMoneda(dataBr, data));
-
+    public Mono<Moneda> obtendoMoneda(LocalDate data) {
+        String dataBr = data.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        String dataS = data.toString();
+        Mono<Moneda> monedaB = this.findByData(dataS);
+        if (this.moneda.getDate() == null) {
+            return this.salvarMoneda(dataBr, dataS);
+        }
         return monedaB;
     }
-
 
 }
