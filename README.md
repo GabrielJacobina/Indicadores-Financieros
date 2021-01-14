@@ -10,4 +10,4 @@ Abra la terminal y ejecute:
 
 Después de ejecutar el acceso:
 
-```http://localhost:8080/swagger-ui.html```
+```http://localhost:8080/swagger-ui/```
