@@ -1,8 +1,8 @@
 package com.indicadoresfinancieros.service;
 
-import com.indicadoresfinancieros.document.Dolar;
-import com.indicadoresfinancieros.document.Indicators;
-import com.indicadoresfinancieros.document.MindicadorApi;
+import com.indicadoresfinancieros.request.Dolar;
+import com.indicadoresfinancieros.request.Indicators;
+import com.indicadoresfinancieros.request.MindicadorApi;
 import com.indicadoresfinancieros.document.Moneda;
 import com.indicadoresfinancieros.repository.MonedaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,19 +11,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.reactive.function.BodyInserters;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.MonoSink;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
-import static org.springframework.http.ResponseEntity.ok;
 
 
 @Service
@@ -49,13 +42,11 @@ public class MonedaServiceImpl implements MonedaService{
 
     public MindicadorApi obterMoeda(String url) {
         RestTemplate restTemplate = new RestTemplate();
-        MindicadorApi mindicadorApi = restTemplate.getForObject(
+        return restTemplate.getForObject(
                 url, MindicadorApi.class);
-
-        return mindicadorApi;
     }
 
-    public Dolar obterDolar() {
+        public Dolar obterDolar() {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("x-rapidapi-host", "currency26.p.rapidapi.com");
