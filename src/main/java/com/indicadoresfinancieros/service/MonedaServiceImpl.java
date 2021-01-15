@@ -1,17 +1,15 @@
 package com.indicadoresfinancieros.service;
 
+import com.indicadoresfinancieros.document.Moneda;
+import com.indicadoresfinancieros.repository.MonedaRepository;
 import com.indicadoresfinancieros.request.Dolar;
 import com.indicadoresfinancieros.request.Indicators;
 import com.indicadoresfinancieros.request.MindicadorApi;
-import com.indicadoresfinancieros.document.Moneda;
-import com.indicadoresfinancieros.repository.MonedaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
@@ -20,18 +18,16 @@ import java.time.format.DateTimeFormatter;
 
 
 @Service
+@RequiredArgsConstructor
 public class MonedaServiceImpl implements MonedaService{
 
-    @Autowired
-    private MonedaRepository monedaRepository;
+    private final MonedaRepository monedaRepository;
 
     Moneda moneda = new Moneda();
 
     public Mono<Moneda> findByData(String dataS) {
         Mono<Moneda> mono = monedaRepository.findById(dataS);
-        mono.subscribe(c -> {
-            this.moneda = c;
-        });
+        mono.subscribe(c -> this.moneda = c);
         mono.toProcessor().block();
         return mono;
     }
@@ -61,13 +57,17 @@ public class MonedaServiceImpl implements MonedaService{
 
     public Mono<Moneda> salvarMoneda(String dataBr, String data) {
         Moneda moneda = new Moneda();
-        BigDecimal valorUf = obterMoeda("https://mindicador.cl/api/uf/".concat(dataBr)).getSerie().get(0).getValor();
-        BigDecimal valorUtm = obterMoeda("https://mindicador.cl/api/utm/".concat(dataBr)).getSerie().get(0).getValor();
-        BigDecimal valorDolar = obterDolar().getValor();
-        Indicators indicators = new Indicators(valorUf, valorUtm, valorDolar);
-        moneda.setDate(data);
-        moneda.setIndicators(indicators);
-        return this.save(moneda);
+        try {
+            BigDecimal valorUf = obterMoeda("https://mindicador.cl/api/uf/".concat(dataBr)).getSerie().get(0).getValor();
+            BigDecimal valorUtm = obterMoeda("https://mindicador.cl/api/utm/".concat(dataBr)).getSerie().get(0).getValor();
+            BigDecimal valorDolar = obterDolar().getValor();
+            Indicators indicators = new Indicators(valorUf, valorUtm, valorDolar);
+            moneda.setDate(data);
+            moneda.setIndicators(indicators);
+            return this.save(moneda);
+        } catch (Exception e) {
+            return Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid request"));
+        }
     }
 
     @Override
