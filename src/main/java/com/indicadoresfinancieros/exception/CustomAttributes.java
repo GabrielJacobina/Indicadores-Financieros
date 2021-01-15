@@ -16,7 +16,8 @@ public class CustomAttributes extends DefaultErrorAttributes {
         Map<String, Object> errorAttributesMap = super.getErrorAttributes(request, options);
         Throwable throwable = getError(request);
         if (throwable instanceof ResponseStatusException) {
-            errorAttributesMap.put("code", ((ResponseStatusException) throwable).getStatus().value());
+            ResponseStatusException ex = (ResponseStatusException) throwable;
+            errorAttributesMap.put("code", ex.getStatus().value());
             errorAttributesMap.put("message", "Invalid Request");
             errorAttributesMap.remove("timestamp");
             errorAttributesMap.remove("path");
