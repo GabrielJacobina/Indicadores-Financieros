@@ -16,9 +16,15 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <blockhound.version>1.0.3.RELEASE</blockhound.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>io.projectreactor.tools</groupId>
+            <artifactId>blockhound</artifactId>
+            <version>${blockhound.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
