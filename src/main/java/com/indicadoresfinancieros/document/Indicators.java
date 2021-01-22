@@ -1,4 +1,4 @@
-package com.indicadoresfinancieros.request;
+package com.indicadoresfinancieros.document;
 
 
 import lombok.AllArgsConstructor;

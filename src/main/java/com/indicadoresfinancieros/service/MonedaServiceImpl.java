@@ -3,7 +3,7 @@ package com.indicadoresfinancieros.service;
 import com.indicadoresfinancieros.document.Moneda;
 import com.indicadoresfinancieros.repository.MonedaRepository;
 import com.indicadoresfinancieros.request.Dolar;
-import com.indicadoresfinancieros.request.Indicators;
+import com.indicadoresfinancieros.document.Indicators;
 import com.indicadoresfinancieros.request.MindicadorApi;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
